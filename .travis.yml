@@ -4,10 +4,10 @@ jdk:
   - openjdk15
 
 #services:
-#  - postgresql
+  - postgresql
 
 #before_install:
-#  - psql -c 'create database tracker;' -U postgres
+  - psql -c 'create database tracker;' -U postgres
 
 env:
   global:
