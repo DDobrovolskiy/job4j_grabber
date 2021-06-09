@@ -7,7 +7,7 @@ jdk:
   - postgresql
 
 #before_install:
-  - psql -c 'create database rabbit;' -U postgres
+  - psql -c 'CREATE DATABASE rabbit' -U postgres
 
 env:
   global:
