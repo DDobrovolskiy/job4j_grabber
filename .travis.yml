@@ -3,10 +3,10 @@ language: java
 jdk:
   - openjdk15
 
-#services:
+services:
   - postgresql
 
-#before_install:
+before_install:
   - psql -c 'CREATE DATABASE rabbit' -U postgres
 
 env:
