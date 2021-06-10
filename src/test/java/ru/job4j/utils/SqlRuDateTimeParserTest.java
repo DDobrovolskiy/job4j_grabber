@@ -56,4 +56,12 @@ public class SqlRuDateTimeParserTest {
         SqlRuDateTimeParser parse = new SqlRuDateTimeParser();
         parse.parse("18 dfgfd, :59");
     }
+
+    @Test
+    public void whenParseRealDate() {
+        SqlRuDateTimeParser parse = new SqlRuDateTimeParser();
+        Assert.assertEquals(
+                parse.parse("2 июн 21, 20:20 [22330575] Ответить | Цитировать Сообщить модератору"),
+                LocalDateTime.of(2021, 6, 2, 20, 20));
+    }
 }

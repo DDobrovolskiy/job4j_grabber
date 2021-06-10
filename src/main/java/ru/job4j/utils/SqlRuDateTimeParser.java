@@ -9,7 +9,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     private Pattern patternTime = Pattern.compile("(\\d{2}):(\\d{2})");
     private Matcher matcherTime;
-    private Pattern patternDate = Pattern.compile("(\\d{2}) (\\D{3}) (\\d{2})");
+    private Pattern patternDate = Pattern.compile("(\\d{1,2}) (\\D{3}) (\\d{2})");
     private Matcher matcherDate;
     private List<String> months = List.
             of("янв", "фев", "мар", "апр", "май", "июн", "юил", "авг", "сен", "окт", "ноя", "дек");
