@@ -91,4 +91,14 @@ public class SqlRuParsePost implements IPost {
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }
+
+    @Override
+    public String toString() {
+        return "SqlRuParsePost{"
+                + "name='" + name + '\''
+                + ", text='" + text + '\''
+                + ", link='" + link + '\''
+                + ", localDateTime=" + localDateTime
+                + '}';
+    }
 }
