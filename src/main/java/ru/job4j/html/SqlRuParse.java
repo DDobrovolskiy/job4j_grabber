@@ -46,7 +46,7 @@ public class SqlRuParse implements Parse {
             }
             return posts;
         } catch (Exception e) {
-            LOG.warn("Ошибка загрузки постов (list): ", link, e);
+            LOG.warn("Ошибка загрузки постов (list): {}", link, e);
             return posts;
         }
     }
@@ -56,7 +56,7 @@ public class SqlRuParse implements Parse {
         try {
             return new SqlRuParsePost(link);
         } catch (Exception e) {
-            LOG.warn("Ошибка загрузки поста (detail): ", link, e);
+            LOG.warn("Ошибка загрузки поста (detail): {}", link, e);
             return null;
         }
     }

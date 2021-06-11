@@ -1,7 +1,6 @@
 package ru.job4j.connect;
 
-public interface IProperties {
-    String getNameProperties();
+public interface IConfigSQL {
 
     String getURL();
 

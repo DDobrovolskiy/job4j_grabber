@@ -10,13 +10,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.connect.ConnectSQL;
-import ru.job4j.connect.IProperties;
+import ru.job4j.connect.IConfigSQL;
+import ru.job4j.properties.PropertyFactory;
 
 public class PsqlStore implements Store, AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(ConnectSQL.class.getName());
     private Connection cnn;
 
-    public PsqlStore(IProperties properties) {
+    public PsqlStore(IConfigSQL properties) {
         cnn = new ConnectSQL().get(properties);
     }
 
@@ -92,7 +93,9 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     public static void main(String[] args) {
-        PsqlStore psqlStore = new PsqlStore(new PsqlProperties());
+        PsqlStore psqlStore =
+                new PsqlStore(
+                        new PsqlProperties(PropertyFactory.load("app.properties")));
         IPost post = new Post("test", "test", "http://test.com", LocalDateTime.now());
         psqlStore.save(post);
         psqlStore.getAll().forEach(System.out::println);

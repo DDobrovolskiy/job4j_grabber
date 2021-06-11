@@ -1,30 +1,33 @@
 package ru.job4j.grabber;
 
-import ru.job4j.connect.IProperties;
+import ru.job4j.connect.IConfigSQL;
 
-public class PsqlProperties implements IProperties {
-    @Override
-    public String getNameProperties() {
-        return "app.properties";
+import java.util.Properties;
+
+public class PsqlProperties implements IConfigSQL {
+    private Properties properties;
+
+    public PsqlProperties(Properties properties) {
+        this.properties = properties;
     }
 
     @Override
     public String getURL() {
-        return "jdbc.url";
+        return properties.getProperty("jdbc.url");
     }
 
     @Override
     public String getLogin() {
-        return "jdbc.username";
+        return properties.getProperty("jdbc.username");
     }
 
     @Override
     public String getPassword() {
-        return "jdbc.password";
+        return properties.getProperty("jdbc.password");
     }
 
     @Override
     public String getDriver() {
-        return "jdbc.driver-class-name";
+        return properties.getProperty("jdbc.driver-class-name");
     }
 }
