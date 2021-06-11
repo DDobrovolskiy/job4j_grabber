@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SqlRuParse implements Parse {
-    private static final Logger LOG = LoggerFactory.getLogger(SqlRuParsePost.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(SqlRuParse.class.getName());
     private static String url = "https://www.sql.ru/forum/job-offers";
 
     public static void main(String[] args) throws Exception {

@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyFactory {
-    private static final Logger LOG = LoggerFactory.getLogger(ConnectSQL.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(PropertyFactory.class.getName());
 
     public static Properties load(String properties) {
         Properties config = new Properties();

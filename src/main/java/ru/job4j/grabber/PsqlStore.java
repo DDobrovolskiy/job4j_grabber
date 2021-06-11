@@ -14,7 +14,7 @@ import ru.job4j.connect.IConfigSQL;
 import ru.job4j.properties.PropertyFactory;
 
 public class PsqlStore implements Store, AutoCloseable {
-    private static final Logger LOG = LoggerFactory.getLogger(ConnectSQL.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private Connection cnn;
 
     public PsqlStore(IConfigSQL properties) {
