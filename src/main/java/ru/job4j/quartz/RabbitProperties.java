@@ -1,12 +1,8 @@
 package ru.job4j.quartz;
 
-import ru.job4j.connect.IProperties;
+import ru.job4j.connect.IConfigSQL;
 
-public class RabbitProperties implements IProperties {
-    @Override
-    public String getNameProperties() {
-        return "rabbit.properties";
-    }
+public class RabbitProperties implements IConfigSQL {
 
     @Override
     public String getURL() {
