@@ -65,7 +65,7 @@ public class Grabber implements Grab {
                         out.write(System.lineSeparator());
                         out.flush();
                         int i = 0;
-                        for (IPost post : store.getAll()) {
+                        for (Post post : store.getAll()) {
                             LOG.debug("Запись: {} - {}", i++, post);
                             out.write(post.toString());
                             out.write(System.lineSeparator());

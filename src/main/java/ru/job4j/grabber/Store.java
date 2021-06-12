@@ -3,9 +3,9 @@ package ru.job4j.grabber;
 import java.util.List;
 
 public interface Store {
-    void save(IPost post);
+    void save(Post post);
 
-    List<IPost> getAll();
+    List<Post> getAll();
 
-    IPost findById(Integer postId);
+    Post findById(Integer postId);
 }

@@ -6,14 +6,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.job4j.grabber.IPost;
+import ru.job4j.grabber.Post;
 import ru.job4j.utils.DateTimeParser;
 import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class SqlRuParsePost implements IPost {
+public class SqlRuParsePost implements Post {
     private static final Logger LOG = LoggerFactory.getLogger(SqlRuParsePost.class.getName());
     private String name;
     private String text;

@@ -22,7 +22,7 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public void save(IPost post) {
+    public void save(ru.job4j.grabber.Post post) {
         try (PreparedStatement statement =
                      cnn.prepareStatement(
                              "insert into posts (name, text, link, date) values (?, ?, ?, ?)")) {
@@ -41,8 +41,8 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public List<IPost> getAll() {
-        List<IPost> posts = new LinkedList<>();
+    public List<ru.job4j.grabber.Post> getAll() {
+        List<ru.job4j.grabber.Post> posts = new LinkedList<>();
         try (PreparedStatement statement =
                      cnn.prepareStatement(
                              "SELECT name, text, link, date FROM posts")) {
@@ -62,8 +62,8 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public IPost findById(Integer postId) {
-        IPost post = null;
+    public ru.job4j.grabber.Post findById(Integer postId) {
+        ru.job4j.grabber.Post post = null;
         try (PreparedStatement statement =
                      cnn.prepareStatement(
                              "SELECT name, text, link, date FROM posts WHERE post_id = ?")) {
@@ -96,14 +96,14 @@ public class PsqlStore implements Store, AutoCloseable {
         PsqlStore psqlStore =
                 new PsqlStore(
                         new PsqlProperties(PropertyFactory.load("app.properties")));
-        IPost post = new Post("test", "test", "http://test.com", LocalDateTime.now());
+        ru.job4j.grabber.Post post = new Post("test", "test", "http://test.com", LocalDateTime.now());
         psqlStore.save(post);
         psqlStore.getAll().forEach(System.out::println);
         System.out.println("----");
         System.out.println(psqlStore.findById(1));
     }
 
-    private static class Post implements IPost {
+    private static class Post implements ru.job4j.grabber.Post {
         private String name;
         private String text;
         private String link;

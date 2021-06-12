@@ -4,7 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.job4j.grabber.IPost;
+import ru.job4j.grabber.Post;
 import ru.job4j.grabber.Parse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class SqlRuParse implements Parse {
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
                 Element href = td.child(0);
-                IPost post = new SqlRuParsePost(href.attr("href"));
+                Post post = new SqlRuParsePost(href.attr("href"));
                 System.out.println(post.getName());
                 System.out.println(post.getText());
                 System.out.println(post.getLink());
@@ -35,8 +35,8 @@ public class SqlRuParse implements Parse {
     }
 
     @Override
-    public List<IPost> list(String link) {
-        List<IPost> posts = new LinkedList<>();
+    public List<Post> list(String link) {
+        List<Post> posts = new LinkedList<>();
         try {
             Document doc = Jsoup.connect(link).get();
             Elements row = doc.select(".postslisttopic");
@@ -52,7 +52,7 @@ public class SqlRuParse implements Parse {
     }
 
     @Override
-    public IPost detail(String link) {
+    public Post detail(String link) {
         try {
             return new SqlRuParsePost(link);
         } catch (Exception e) {
