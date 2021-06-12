@@ -16,17 +16,13 @@ public class SqlRuDateTimeParser implements DateTimeParser {
 
     @Override
     public LocalDateTime parse(String parse) {
-        LocalDate localDate = LocalDate.now();
-        LocalTime localTime;
         String[] dataTime = parse.split(", ");
-        if (parse.startsWith("сегодня")) {
-            localTime = parseTime(dataTime[1]);
-        } else if (parse.startsWith("вчера")) {
+        LocalDate localDate = LocalDate.now();
+        LocalTime localTime = parseTime(dataTime[1]);
+        if (parse.startsWith("вчера")) {
             localDate = LocalDate.now().minusDays(1);
-            localTime = parseTime(dataTime[1]);
-        } else {
+        } else if ((!parse.startsWith("сегодня")) && (!parse.startsWith("вчера"))) {
             localDate = parseDate(dataTime[0]);
-            localTime = parseTime(dataTime[1]);
         }
         return LocalDateTime.of(localDate, localTime);
     }
