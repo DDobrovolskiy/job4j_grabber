@@ -7,45 +7,33 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.grabber.Post;
-import ru.job4j.utils.DateTimeParser;
+import ru.job4j.grabber.PsqlPost;
 import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class SqlRuParsePost implements Post {
+public class SqlRuParsePost {
     private static final Logger LOG = LoggerFactory.getLogger(SqlRuParsePost.class.getName());
-    private String name;
-    private String text;
-    private String link;
-    private LocalDateTime localDateTime;
-    private DateTimeParser dateTimeParser = new SqlRuDateTimeParser();
-    private Element element;
+    private final String link;
+    private final Element element;
 
     public SqlRuParsePost(String link) throws IOException {
         this.link = link;
-        this.element = parsePost();
-        this.name = parseName(element);
-        this.text = parseText(element);
-        this.localDateTime = parseDateTime(element);
+        this.element = parsePost(link);
     }
 
-    public SqlRuParsePost(String link, String name, String dataTime) throws IOException {
-        this.link = link;
-        this.name = name;
-        dateTimeParser = new SqlRuDateTimeParser();
-        this.localDateTime = dateTimeParser.parse(dataTime);
-        this.element = parsePost();
-        this.text = parseText(element);
+    public Post get() {
+        return new PsqlPost(parseName(), parseText(), link, parseDateTime());
     }
 
-    private Element parsePost() throws IOException {
+    private Element parsePost(String link) throws IOException {
         Document doc = Jsoup.connect(link).get();
         Elements row = doc.select(".msgTable");
         return row.get(0);
     }
 
-    private String parseName(Element element) {
+    private String parseName() {
         try {
             return element.child(0).child(0).child(0).text(); //name
         } catch (Exception e) {
@@ -54,7 +42,7 @@ public class SqlRuParsePost implements Post {
         }
     }
 
-    private String parseText(Element element) {
+    private String parseText() {
         try {
             return element.child(0).child(1).child(1).text(); //text
         } catch (Exception e) {
@@ -63,42 +51,12 @@ public class SqlRuParsePost implements Post {
         }
     }
 
-    private LocalDateTime parseDateTime(Element element) {
+    private LocalDateTime parseDateTime() {
         try {
-            return dateTimeParser.parse(element.child(0).child(2).child(0).text());
+            return new SqlRuDateTimeParser().parse(element.child(0).child(2).child(0).text());
         } catch (Exception e) {
             LOG.warn("Расшифровка вермени (parseDateTime) не удалась: ", e);
             return null;
         }
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String getLink() {
-        return link;
-    }
-
-    @Override
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "SqlRuParsePost{"
-                + "name='" + name + '\''
-                + ", text='" + text + '\''
-                + ", link='" + link + '\''
-                + ", localDateTime=" + localDateTime
-                + '}';
     }
 }

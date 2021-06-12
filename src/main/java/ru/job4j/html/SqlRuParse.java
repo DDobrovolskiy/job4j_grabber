@@ -25,7 +25,7 @@ public class SqlRuParse implements Parse {
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
                 Element href = td.child(0);
-                Post post = new SqlRuParsePost(href.attr("href"));
+                Post post = new SqlRuParsePost(href.attr("href")).get();
                 System.out.println(post.getName());
                 System.out.println(post.getText());
                 System.out.println(post.getLink());
@@ -42,7 +42,7 @@ public class SqlRuParse implements Parse {
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
                 Element href = td.child(0);
-                posts.add(new SqlRuParsePost(href.attr("href")));
+                posts.add(new SqlRuParsePost(href.attr("href")).get());
             }
             return posts;
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class SqlRuParse implements Parse {
     @Override
     public Post detail(String link) {
         try {
-            return new SqlRuParsePost(link);
+            return new SqlRuParsePost(link).get();
         } catch (Exception e) {
             LOG.warn("Ошибка загрузки поста (detail): {}", link, e);
             return null;

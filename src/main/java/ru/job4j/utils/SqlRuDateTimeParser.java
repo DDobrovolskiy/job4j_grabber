@@ -5,16 +5,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SqlRuDateTimeParser implements DateTimeParser {
+public class SqlRuDateTimeParser implements  DateTimeParser {
 
-    private Pattern patternTime = Pattern.compile("(\\d{2}):(\\d{2})");
-    private Matcher matcherTime;
-    private Pattern patternDate = Pattern.compile("(\\d{1,2}) (\\D{3}) (\\d{2})");
-    private Matcher matcherDate;
-    private List<String> months = List.
+    private final Pattern patternTime = Pattern.compile("(\\d{2}):(\\d{2})");
+    private final Pattern patternDate = Pattern.compile("(\\d{1,2}) (\\D{3}) (\\d{2})");
+    private final List<String> months = List.
             of("янв", "фев", "мар", "апр", "май", "июн", "юил", "авг", "сен", "окт", "ноя", "дек");
 
-    @Override
     public LocalDateTime parse(String parse) {
         String[] dataTime = parse.split(", ");
         LocalDate localDate = LocalDate.now();
@@ -28,7 +25,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private LocalTime parseTime(String time) {
-        matcherTime = patternTime.matcher(time);
+        Matcher matcherTime = patternTime.matcher(time);
         if (!matcherTime.find()) {
             throw new IllegalArgumentException();
         }
@@ -38,7 +35,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private LocalDate parseDate(String date) {
-        matcherDate = patternDate.matcher(date);
+        Matcher matcherDate = patternDate.matcher(date);
         if (!matcherDate.find()) {
             throw new IllegalArgumentException();
         }
