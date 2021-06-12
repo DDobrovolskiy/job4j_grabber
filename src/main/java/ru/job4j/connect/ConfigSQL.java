@@ -1,6 +1,6 @@
 package ru.job4j.connect;
 
-public interface IConfigSQL {
+public interface ConfigSQL {
 
     String getURL();
 

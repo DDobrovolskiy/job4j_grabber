@@ -10,6 +10,7 @@ import java.util.Properties;
 public class PropertyFactory {
     private static final Logger LOG = LoggerFactory.getLogger(PropertyFactory.class.getName());
 
+    /** Фабрика properties */
     public static Properties load(String properties) {
         Properties config = new Properties();
         try (InputStream in = ConnectSQL

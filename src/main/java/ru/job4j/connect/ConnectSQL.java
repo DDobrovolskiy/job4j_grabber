@@ -10,7 +10,7 @@ public class ConnectSQL implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(ConnectSQL.class.getName());
     private Connection connection;
 
-    public Connection get(IConfigSQL config) {
+    public Connection get(ConfigSQL config) {
         try {
             connection = DriverManager.getConnection(
                     config.getURL(),

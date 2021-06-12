@@ -1,26 +1,33 @@
 package ru.job4j.quartz;
 
-import ru.job4j.connect.IConfigSQL;
+import ru.job4j.connect.ConfigSQL;
 
-public class RabbitProperties implements IConfigSQL {
+import java.util.Properties;
+
+public class RabbitProperties implements ConfigSQL {
+    private Properties properties;
+
+    public RabbitProperties(Properties properties) {
+        this.properties = properties;
+    }
 
     @Override
     public String getURL() {
-        return "rabbit.url";
+        return properties.getProperty("rabbit.url");
     }
 
     @Override
     public String getLogin() {
-        return "rabbit.username";
+        return properties.getProperty("rabbit.username");
     }
 
     @Override
     public String getPassword() {
-        return "rabbit.password";
+        return properties.getProperty("rabbit.password");
     }
 
     @Override
     public String getDriver() {
-        return "rabbit.driver-class-name";
+        return properties.getProperty("rabbit.driver-class-name");
     }
 }

@@ -1,10 +1,10 @@
 package ru.job4j.grabber;
 
-import ru.job4j.connect.IConfigSQL;
+import ru.job4j.connect.ConfigSQL;
 
 import java.util.Properties;
 
-public class PsqlProperties implements IConfigSQL {
+public class PsqlProperties implements ConfigSQL {
     private Properties properties;
 
     public PsqlProperties(Properties properties) {

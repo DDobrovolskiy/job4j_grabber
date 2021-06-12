@@ -10,14 +10,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.connect.ConnectSQL;
-import ru.job4j.connect.IConfigSQL;
+import ru.job4j.connect.ConfigSQL;
 import ru.job4j.properties.PropertyFactory;
 
 public class PsqlStore implements Store, AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private Connection cnn;
 
-    public PsqlStore(IConfigSQL properties) {
+    public PsqlStore(ConfigSQL properties) {
         cnn = new ConnectSQL().get(properties);
     }
 

@@ -3,8 +3,8 @@ package ru.job4j.quartz;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import ru.job4j.connect.ConnectSQL;
+import ru.job4j.properties.PropertyFactory;
 
-import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Properties;
@@ -14,8 +14,10 @@ import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbitNew {
+    private static Properties properties = PropertyFactory.load("rabbit.properties");
+
     public static void main(String[] args) {
-        try (Connection connection = new ConnectSQL().get(new RabbitProperties())) {
+        try (Connection connection = new ConnectSQL().get(new RabbitProperties(properties))) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
@@ -24,7 +26,7 @@ public class AlertRabbitNew {
                     .usingJobData(data)
                     .build();
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(Integer.parseInt(readSettings("rabbit.properties")
+                    .withIntervalInSeconds(Integer.parseInt(properties
                             .getProperty("rabbit.interval")))
                     .repeatForever();
             Trigger trigger = newTrigger()
@@ -32,23 +34,13 @@ public class AlertRabbitNew {
                     .withSchedule(times)
                     .build();
             scheduler.scheduleJob(job, trigger);
-            Thread.sleep(10500);
+            Thread.sleep(Integer.parseInt(properties
+                    .getProperty("rabbit.end-time")));
             scheduler.shutdown();
             System.out.println("STOP");
         } catch (Exception se) {
             se.printStackTrace();
         }
-    }
-
-    private static Properties readSettings(String file) {
-        Properties properties = new Properties();
-        try (InputStream in =
-                     AlertRabbit.class.getClassLoader().getResourceAsStream(file)) {
-            properties.load(in);
-        }  catch (Exception se) {
-            se.printStackTrace();
-        }
-        return properties;
     }
 
     public static class Rabbit implements Job {
