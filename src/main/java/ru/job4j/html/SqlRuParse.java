@@ -14,25 +14,30 @@ import java.util.List;
 
 public class SqlRuParse implements Parse {
     private static final Logger LOG = LoggerFactory.getLogger(SqlRuParse.class.getName());
-    private static String url = "https://www.sql.ru/forum/job-offers";
+    private ParsePost parsePost;
+    private String url = "https://www.sql.ru/forum/job-offers";
 
-    public static void main(String[] args) throws Exception {
-        for (int i = 1; i <= 5; i++) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(url).append("/").append(i);
-            System.out.println(stringBuilder);
-            Document doc = Jsoup.connect(stringBuilder.toString()).get();
-            Elements row = doc.select(".postslisttopic");
-            for (Element td : row) {
-                Element href = td.child(0);
-                Post post = new SqlRuParsePost(href.attr("href")).get();
-                System.out.println(post.getName());
-                System.out.println(post.getText());
-                System.out.println(post.getLink());
-                System.out.println(post.getLocalDateTime());
-            }
-        }
+    public SqlRuParse(ParsePost parsePost) {
+        this.parsePost = parsePost;
     }
+
+    //public static void main(String[] args) throws Exception {
+    //    for (int i = 1; i <= 5; i++) {
+    //        StringBuilder stringBuilder = new StringBuilder();
+    //        stringBuilder.append(url).append("/").append(i);
+    //        System.out.println(stringBuilder);
+    //        Document doc = Jsoup.connect(stringBuilder.toString()).get();
+    //        Elements row = doc.select(".postslisttopic");
+    //        for (Element td : row) {
+    //            Element href = td.child(0);
+    //            Post post = parsePost().get(href.attr("href"));
+    //            System.out.println(post.getName());
+    //            System.out.println(post.getText());
+    //            System.out.println(post.getLink());
+    //            System.out.println(post.getLocalDateTime());
+    //        }
+    //    }
+    //}
 
     @Override
     public List<Post> list(String link) {
@@ -42,7 +47,7 @@ public class SqlRuParse implements Parse {
             Elements row = doc.select(".postslisttopic");
             for (Element td : row) {
                 Element href = td.child(0);
-                posts.add(new SqlRuParsePost(href.attr("href")).get());
+                posts.add(parsePost.get(href.attr("href")));
             }
             return posts;
         } catch (Exception e) {
@@ -54,7 +59,7 @@ public class SqlRuParse implements Parse {
     @Override
     public Post detail(String link) {
         try {
-            return new SqlRuParsePost(link).get();
+            return parsePost.get(link);
         } catch (Exception e) {
             LOG.warn("Ошибка загрузки поста (detail): {}", link, e);
             return null;

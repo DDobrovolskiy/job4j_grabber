@@ -4,8 +4,12 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.html.ParsePost;
 import ru.job4j.html.SqlRuParse;
+import ru.job4j.html.SqlRuParsePost;
 import ru.job4j.properties.PropertyFactory;
+import ru.job4j.utils.DateTimeParser;
+import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -85,7 +89,7 @@ public class Grabber implements Grab {
     public static class GrabJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
+        public void execute(JobExecutionContext context) {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
@@ -99,7 +103,13 @@ public class Grabber implements Grab {
         Grabber grab = new Grabber();
         Scheduler scheduler = grab.scheduler();
         Store store = grab.store();
-        grab.init(new SqlRuParse(), store, scheduler);
+        //utils
+        DateTimeParser dateTimeParser = new  SqlRuDateTimeParser();
+        //html
+        ParsePost parsePost = new SqlRuParsePost(dateTimeParser);
+        Parse parse = new SqlRuParse(parsePost);
+        //init
+        grab.init(parse, store, scheduler);
         grab.web(store);
     }
 }
