@@ -22,7 +22,7 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public void save(ru.job4j.grabber.Post post) {
+    public void save(Post post) {
         try (PreparedStatement statement =
                      cnn.prepareStatement(
                              "insert into posts (name, text, link, date) values (?, ?, ?, ?)")) {
@@ -41,14 +41,14 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public List<ru.job4j.grabber.Post> getAll() {
-        List<ru.job4j.grabber.Post> posts = new LinkedList<>();
+    public List<Post> getAll() {
+        List<Post> posts = new LinkedList<>();
         try (PreparedStatement statement =
                      cnn.prepareStatement(
                              "SELECT name, text, link, date FROM posts")) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    posts.add(new Post(
+                    posts.add(new PsqlPost(
                             resultSet.getString("name"),
                             resultSet.getString("text"),
                             resultSet.getString("link"),
@@ -62,8 +62,8 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public ru.job4j.grabber.Post findById(Integer postId) {
-        ru.job4j.grabber.Post post = null;
+    public Post findById(Integer postId) {
+        Post post = null;
         try (PreparedStatement statement =
                      cnn.prepareStatement(
                              "SELECT name, text, link, date FROM posts WHERE post_id = ?")) {
@@ -72,7 +72,7 @@ public class PsqlStore implements Store, AutoCloseable {
                 if (!resultSet.next()) {
                     LOG.warn("Не найдена запись поста с post_id = {}", postId);
                 } else {
-                    post = new Post(
+                    post = new PsqlPost(
                             resultSet.getString("name"),
                             resultSet.getString("text"),
                             resultSet.getString("link"),
@@ -96,20 +96,20 @@ public class PsqlStore implements Store, AutoCloseable {
         PsqlStore psqlStore =
                 new PsqlStore(
                         new PsqlProperties(PropertyFactory.load("app.properties")));
-        ru.job4j.grabber.Post post = new Post("test", "test", "http://test.com", LocalDateTime.now());
+        Post post = new PsqlPost("test", "test", "http://test.com", LocalDateTime.now());
         psqlStore.save(post);
         psqlStore.getAll().forEach(System.out::println);
         System.out.println("----");
         System.out.println(psqlStore.findById(1));
     }
 
-    private static class Post implements ru.job4j.grabber.Post {
+    private static class PsqlPost implements Post {
         private String name;
         private String text;
         private String link;
         private LocalDateTime localDateTime;
 
-        public Post(String name, String text, String link, LocalDateTime localDateTime) {
+        public PsqlPost(String name, String text, String link, LocalDateTime localDateTime) {
             this.name = name;
             this.text = text;
             this.link = link;
