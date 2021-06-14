@@ -45,10 +45,11 @@ public class PsqlStore implements Store, AutoCloseable {
         List<Post> posts = new LinkedList<>();
         try (PreparedStatement statement =
                      cnn.prepareStatement(
-                             "SELECT name, text, link, date FROM posts")) {
+                             "SELECT post_id, name, text, link, date FROM posts")) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     posts.add(new PsqlPost(
+                            resultSet.getInt("post_id"),
                             resultSet.getString("name"),
                             resultSet.getString("text"),
                             resultSet.getString("link"),
@@ -66,13 +67,16 @@ public class PsqlStore implements Store, AutoCloseable {
         Post post = null;
         try (PreparedStatement statement =
                      cnn.prepareStatement(
-                             "SELECT name, text, link, date FROM posts WHERE post_id = ?")) {
+                             "SELECT post_id, name, text, link, date "
+                                    + "FROM posts "
+                                    + "WHERE post_id = ?")) {
             statement.setInt(1, postId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
                     LOG.warn("Не найдена запись поста с post_id = {}", postId);
                 } else {
                     post = new PsqlPost(
+                            resultSet.getInt("post_id"),
                             resultSet.getString("name"),
                             resultSet.getString("text"),
                             resultSet.getString("link"),
