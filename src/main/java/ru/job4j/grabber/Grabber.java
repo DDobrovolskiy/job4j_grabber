@@ -94,7 +94,10 @@ public class Grabber implements Grab {
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
             LOG.debug("Загрузка постов начата");
-            parse.list("https://www.sql.ru/forum/job-offers").forEach(store::save);
+            parse.getLinks().forEach(link -> {
+                LOG.debug("Загрузка сайта для парсинга {}", link);
+                parse.list(link).forEach(store::save);
+            });
             LOG.debug("Загрузка постов завершена");
         }
     }
