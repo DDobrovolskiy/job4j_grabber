@@ -17,7 +17,7 @@ public class AlertRabbitNew {
     private static Properties properties = PropertyFactory.load("rabbit.properties");
 
     public static void main(String[] args) {
-        try (Connection connection = new ConnectSQL().get(new RabbitProperties(properties))) {
+        try (Connection connection = new ConnectSQL(new RabbitProperties(properties)).get()) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();

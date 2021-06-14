@@ -9,9 +9,16 @@ import java.sql.DriverManager;
 public class ConnectSQL implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(ConnectSQL.class.getName());
     private Connection connection;
+    private ConfigSQL config;
 
-    public Connection get(ConfigSQL config) {
+    public ConnectSQL(ConfigSQL config) {
+        this.config = config;
+        init(config);
+    }
+
+    private void init(ConfigSQL config) {
         try {
+            Class.forName(config.getDriver());
             connection = DriverManager.getConnection(
                     config.getURL(),
                     config.getLogin(),
@@ -20,6 +27,9 @@ public class ConnectSQL implements AutoCloseable {
         } catch (Exception e) {
             LOG.error("Error load connection: ", e);
         }
+    }
+
+    public Connection get() {
         return connection;
     }
 

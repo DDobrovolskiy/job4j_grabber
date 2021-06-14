@@ -17,8 +17,8 @@ public class PsqlStore implements Store, AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private Connection cnn;
 
-    public PsqlStore(ConfigSQL properties) {
-        cnn = new ConnectSQL().get(properties);
+    public PsqlStore(ConfigSQL configSQL) {
+        cnn = new ConnectSQL(configSQL).get();
     }
 
     @Override
@@ -30,11 +30,8 @@ public class PsqlStore implements Store, AutoCloseable {
             statement.setString(2, post.getText());
             statement.setString(3, post.getLink());
             statement.setTimestamp(4, Timestamp.valueOf(post.getLocalDateTime()));
-            if (statement.execute()) {
-                LOG.warn("Данные поста не добавились в таблицу SQL: {}", post);
-            } else {
-                LOG.debug("Запись поста добавлена: {}", post);
-            }
+            statement.execute();
+            LOG.debug("Запись поста добавлена: {}", post);
         } catch (Exception e) {
             LOG.error("Ошибка добавления в таблицу SQL: {}", post, e);
         }
