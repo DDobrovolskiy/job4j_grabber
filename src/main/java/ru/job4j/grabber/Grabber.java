@@ -103,6 +103,7 @@ public class Grabber implements Grab {
     }
 
     public static void main(String[] args) throws Exception {
+        //Thread.sleep(5000);
         Grabber grab = new Grabber();
         Scheduler scheduler = grab.scheduler();
         Store store = grab.store();
